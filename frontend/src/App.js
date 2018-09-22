@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Routes from './Routes.js'
 
 class App extends Component {
   render() {
-    console.log("props",this.props)
     return (
       <div>
       <div id='appbase'>
