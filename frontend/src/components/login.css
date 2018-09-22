@@ -1,0 +1,22 @@
+.page-wrapper.auth-page {
+    background: #fff;
+}
+
+.form-group.pull-right {
+    padding-top: 19px;
+    padding-right: 15px;
+}
+
+.auth-form-wrap {
+    padding: 30px 0;
+}
+
+.auth-form {
+    width: 400px;
+}
+
+@media (max-width: 500px) {
+    .auth-form {
+        width: 100%;
+    }
+}
