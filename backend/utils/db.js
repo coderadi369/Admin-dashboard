@@ -13,8 +13,7 @@ DB.prototype.connect = function(uri) {
             MongoClient.connect(uri)
             .then(
                 function(database) {
-                    
-                   __this.db = database;
+                    __this.db = database;
                    resolve();
                 },
                 function(err) {
@@ -43,11 +42,11 @@ DB.prototype.findDocuments=function(collection_name,data){
     var _this=this
     return new Promise((resolve,reject)=>{
         let collection=(_this.db).collection(collection_name)
-        collection.findOne({'username':data.username,'password':data.password},(err,result)=>{
+        collection.findOne(data,(err,result)=>{
             if(err){
                 reject({'status':'error','message':'Error occured while finding login'})
             }
-            resolve({'status':'success','message':'logged in user successfully'})
+        resolve({'status':'success','message':'logged in user successfully','result':result})
         })
     })
 }

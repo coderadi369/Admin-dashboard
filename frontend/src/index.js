@@ -5,10 +5,13 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import {createBrowserHistory} from 'history'
 import {BrowserRouter as Router} from 'react-router-dom'
+import { CookiesProvider } from 'react-cookie';
 const history = createBrowserHistory();
 
 ReactDOM.render(
+   <CookiesProvider>
 	<Router history={history}> 
 	 <App/>
-	</Router>, document.getElementById('root'));
+	</Router>
+   </CookiesProvider>, document.getElementById('root'));
 registerServiceWorker();

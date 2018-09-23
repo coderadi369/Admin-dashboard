@@ -1,15 +1,16 @@
 import React,{Component} from 'react';
-import { Container, Row } from 'reactstrap';
+import { Container, Row,Input } from 'reactstrap';
 import './login.css'
 import {config} from '../config.js'
 import httpUtils from '../utils/http.js'
 import { withCookies, Cookies } from 'react-cookie';
 
 
-class Home extends Component{
+
+class Register extends Component{
 	constructor(props){
 		super(props)
-		this.state={'username':'',password:'',error_msg:''}
+		this.state={'username':'',password:'',error_msg:'','role':'user'}
 		this.handleChange=this.handleChange.bind(this);
 		this.handleSubmit=this.handleSubmit.bind(this);
 	}
@@ -19,9 +20,9 @@ class Home extends Component{
     }
      
     componentDidMount() {
-		const {cookies,history}=this.props
-        if(cookies.get('username')){
-            history.push('/profile')
+		const {cookies,history}=this.props;
+        if((cookies.get('role').toLowerCase())!='admin'){
+            history.push('/')
         }
     }
  
@@ -30,14 +31,15 @@ class Home extends Component{
         e.preventDefault();
         let data = {
             username: this.state.username,
-            password: this.state.password
+            password: this.state.password,
+            role:this.state.role
         }
-
-        httpUtils.post(config.api+'/login',data).then(function(response){
-            history.push('/profile')
+        httpUtils.post(config.api+'/register',data).then(function(data){
+            console.log(">> registered sucessfuuly")
         }).catch(function(error){
-            console.log("Errro occured in user login")
+            console.log(">> some error occured")
         })
+
         
     }
 
@@ -52,7 +54,7 @@ class Home extends Component{
                                     <Row>
                                         <div className="col-sm-12 col-xs-12">
                                             <div className="mb-30">
-                                                <h3 className="text-center txt-dark mb-10">Sign in</h3>
+                                                <h3 className="text-center txt-dark mb-10">Register</h3>
                                                 <h6 className="text-center nonecase-font txt-grey">Enter your details below</h6>
                                             </div>
                                             <div className="form-wrap" onSubmit={this.handleSubmit}>
@@ -66,10 +68,21 @@ class Home extends Component{
                                                         <label className="pull-left control-label mb-10" htmlFor="password">Password</label>
                                                         <input type="password" className="form-control" required="" id="password" placeholder="Enter Password" value={this.state.password} onChange={this.handleChange}/>
                                                     </div>
+                                                    <div className="clearfix" />
+                                                    <div className="form-group">
+                                                        <label className="pull-left control-label mb-10" htmlFor="role"> Select Role </label>
+                                                        <Input type="select" name="select" id="role" onChange={this.handleChange}>
+                                                            <option>User</option>
+                                                            <option>Developer</option>
+                                                            <option>Tester</option>
+                                                            <option>Admin</option>
+                                                        </Input>
+                                                    </div>
+                                                    <div className='clearfix' />
                                                     <div>{this.state.error_msg ? this.state.error_msg : ""}</div>
                                                     <div className="clearfix" />
                                                     <div className="form-group text-center">
-                                                        <button type="submit" className="button -dark">sign in</button>
+                                                        <button type="submit" className="button -dark">Register</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -85,4 +98,4 @@ class Home extends Component{
     }
 }
 
-export default withCookies(Home);
+export default withCookies(Register)

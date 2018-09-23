@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Route, Switch, withRouter,Redirect } from 'react-router-dom';
 import  Home from './components/Home.js';
-import  User from './components/User.js';
+import Register from './components/Register.js'
+import Profile from './components/Profile.js'
 
 
 class Routes extends Component{
@@ -15,7 +16,8 @@ class Routes extends Component{
           <div>
           	 <Switch>
              <Route exact path='/' component={Home} />
-             <Route exact path='/user' component={User} />
+             <Route exact path='/register' component={Register}/>
+             <Route exact path='/profile' component={Profile}/>
              </Switch>
 		  </div>
        );

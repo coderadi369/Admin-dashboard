@@ -1,24 +1,39 @@
 import React,{Component} from 'react';
 import { Container, Row } from 'reactstrap';
+import { withCookies, Cookies } from 'react-cookie';
+import {config} from '../config.js'
+import httpUtils from '../utils/http.js'
 
-
-class User extends Component{
+class Profile extends Component{
 	constructor(props){
 		super(props)
 		this.handleSubmit=this.handleSubmit.bind(this);
 	}
  
     componentDidMount() {
-		const {history}=this.props
-        if(!(localStorage.getItem('loggedin')))
-        	history.push('/')
+		const {history,cookies}=this.props
+        if(!(cookies.get('username'))){
+            history.push('/')
+        }else{
+           httpUtils.get(config.api+'/').then(function(data){
+              console.log(">>> data",data)
+           }).catch(function(error){
+              console.log(">> error",error)
+           })
+        }
+    }
+
+    getDomain(){
+        return '.manch.test'
     }
     
     handleSubmit(e){
     	e.preventDefault();
-    	const {history}=this.props;
-    	localStorage.removeItem('loggedin')
-    	history.push('/')
+    	const {history,cookies}=this.props;
+    	const domain = this.getDomain()
+        cookies.remove('username', {path: '/', domain: domain});
+        cookies.remove('role', {path: '/', domain: domain});
+        history.push('/')
     }
 
 
@@ -33,7 +48,7 @@ class User extends Component{
                                     <Row>
                                         <div className="col-sm-12 col-xs-12">
                                             <div className="mb-30">
-                                                <h3 className="text-center txt-dark mb-10">You are Logged in as {localStorage.getItem('loggedin')}</h3>
+                                                <h3 className="text-center txt-dark mb-10">Hello !! You are Logged in </h3>
                                             </div>
                                             <div className="form-wrap" onSubmit={this.handleSubmit}>
                                                 <form action="#">
@@ -54,4 +69,4 @@ class User extends Component{
 	}
 }
 
-export default User
+export default withCookies(Profile)

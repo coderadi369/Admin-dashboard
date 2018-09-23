@@ -1,5 +1,6 @@
 const router =module.exports=require('express').Router()
 const UserModel=require(`${__base}/user/UserModel`)
+const {isAuthenticated}=require(`${__base}/utils/helper`)
 const cors = require('cors')
 
 var corsOptions = {
@@ -19,6 +20,12 @@ router.post('/login',(req,res)=>{
   UserModel.loginUser(req,res)
 })
 
-router.get('/',(req,res)=>{
-	res.status(200).json({'user':'profile'})
+router.get('/users',(req,res)=>{
+	res.status(200).json({'name':req.session.username})
 })
+
+router.get('/',isAuthenticated,(req,res)=>{
+  UserModel.getAllUsers(req,res)
+})
+
+
