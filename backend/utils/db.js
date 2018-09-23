@@ -39,6 +39,19 @@ DB.prototype.insertDocuments=function(collection_name,data){
 	})
 }
 
+DB.prototype.findDocuments=function(collection_name,data){
+    var _this=this
+    return new Promise((resolve,reject)=>{
+        let collection=(_this.db).collection(collection_name)
+        collection.findOne({'username':data.username,'password':data.password},(err,result)=>{
+            if(err){
+                reject({'status':'error','message':'Error occured while finding login'})
+            }
+            resolve({'status':'success','message':'logged in user successfully'})
+        })
+    })
+}
+
 DB.prototype.close = function() {
     if (this.db) {
         this.db.close()
